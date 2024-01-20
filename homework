@@ -1,0 +1,52 @@
+class ParkingGarage:
+    def __init__(self):
+        self.tickets = [1, 2, 3, 4, 5]  # Example list of available tickets
+        self.parkingSpaces = [1, 2, 3, 4, 5]  # Example list of available parking spaces
+        self.currentTicket = {}  # Example dictionary to store ticket information
+
+    def takeTicket(self):
+        if len(self.tickets) > 0 and len(self.parkingSpaces) > 0:
+            ticket = self.tickets.pop(0)
+            space = self.parkingSpaces.pop(0)
+            self.currentTicket[ticket] = {"space": space, "paid": False}
+            print(f"Please take ticket {ticket}. Parking space {space} is available.")
+        else:
+            print("Sorry, the parking garage is full.")
+
+    def payForParking(self):
+        ticket = int(input("Please enter your ticket number: "))
+        if ticket in self.currentTicket:
+            if not self.currentTicket[ticket]["paid"]:
+                amount = input("Please enter the payment amount: ")
+                if amount:
+                    self.currentTicket[ticket]["paid"] = True
+                    print("Thank you for your payment! You have 15 minutes to leave.")
+                else:
+                    print("Payment amount cannot be empty.")
+            else:
+                print("Your ticket has already been paid.")
+        else:
+            print("Invalid ticket number.")
+
+    def leaveGarage(self):
+        ticket = int(input("Please enter your ticket number: "))
+        if ticket in self.currentTicket:
+            if self.currentTicket[ticket]["paid"]:
+                space = self.currentTicket[ticket]["space"]
+                self.parkingSpaces.append(space)
+                self.tickets.append(ticket)
+                del self.currentTicket[ticket]
+                print("Thank you for using our parking garage! Have a nice day.")
+            else:
+                amount = input("Payment is required. Please enter the payment amount: ")
+                if amount:
+                    self.currentTicket[ticket]["paid"] = True
+                    space = self.currentTicket[ticket]["space"]
+                    self.parkingSpaces.append(space)
+                    self.tickets.append(ticket)
+                    del self.currentTicket[ticket]
+                    print("Thank you for your payment! You have 15 minutes to leave.")
+                else:
+                    print("Payment amount cannot be empty.")
+        else:
+            print("Invalid ticket number.")
